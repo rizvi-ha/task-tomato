@@ -5,6 +5,14 @@
   import Todo from './lib/Todo.svelte';
 
   let length = 6;
+  let events = [
+  {
+    "id": 1,
+    "start": 100,
+    "length": 100,
+    "color": "#ea4b07",
+    "label": "Study"
+  }];
 
   function incrementLength() {
     if (length < 10)
@@ -24,7 +32,7 @@
 
 <main>
   <div class="timeline-cont">
-    <Timeline {length} />
+    <Timeline {length} {events} on:update="{e => events = e.detail.events}" />
     <div class="length-controls">
       <button on:click={incrementLength}>+</button>
       <button on:click={decrementLength}>-</button>
@@ -33,7 +41,11 @@
   <div class="todo-container">
     <Todo />
   </div>
+
+  <pre>{JSON.stringify(events, null, 2)}</pre>
 </main>
+
+
 
 <style>
 
