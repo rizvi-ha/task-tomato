@@ -8,10 +8,17 @@
   let events = [
   {
     "id": 1,
-    "start": 100,
+    "start": 105,
     "length": 100,
     "color": "#ea4b07",
     "label": "Study"
+  }, 
+  {
+    "id": 2,
+    "start": 50,
+    "length": 40,
+    "color": "#ea0000",
+    "label": "Eat"
   }];
 
   function incrementLength() {

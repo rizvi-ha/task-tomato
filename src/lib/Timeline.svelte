@@ -84,16 +84,24 @@
       const timelineWidth = timelineContainer.offsetWidth;
       const totalMinutes = length * 60;
       const pixelsPerMinute = timelineWidth / totalMinutes;
+
+      accumulatedMovement += e.detail.x;
       
       // Calculate resize amount in minutes
-      const resizeAmount = Math.round(e.detail.x / pixelsPerMinute);
-      let newLength = event.length + resizeAmount;
-      newLength = Math.max(5, newLength);
+      const resizeAmount = Math.round(accumulatedMovement / pixelsPerMinute);
 
-      event.length = newLength;
-      events[index] = { ...event };
-      events = [...events]; // Trigger reactivity
-      dispatch('update', { events });
+      if (Math.abs(resizeAmount) >= 5){
+        let newLength = event.length + resizeAmount;
+        newLength = Math.max(5, newLength);
+        newLength = newLength - (newLength % 5)
+
+        event.length = newLength;
+        events[index] = { ...event };
+        events = [...events]; // Trigger reactivity
+        dispatch('update', { events });
+
+        accumulatedMovement = 0;
+      } 
     }
   }
 
@@ -108,7 +116,7 @@
       x = event.clientX;
       y = event.clientY;
       const rect = node.getBoundingClientRect();
-      mode = (x > rect.right - 10) ? "resize" : "move"; // Threshold for resizing
+      mode = (x > rect.right - 11) ? "resize" : "move"; // Threshold for resizing
       
       node.dispatchEvent(new CustomEvent('dragstart', {
         detail: { x, y, mode }
@@ -173,7 +181,7 @@
 
     <div use:draggable
          style="{eventStyles[index]}"
-
+         class="event"
          on:dragmove="{(e) => {
           if (e.detail.mode === 'move') {
             updateEventPosition(e, event, index);
@@ -187,7 +195,7 @@
          aria-label="Draggable event">
 
       {event.label}
-      
+
     </div>
 
   {/each}
@@ -241,5 +249,22 @@
     padding-right: 10px;
     user-select: none; 
   }
+
+  .event {
+  position: relative;
+  cursor: grab; /* Ensure this is set for absolute positioning inside */
+}
+
+.event::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px; /* Width of the resize area */
+  height: 100%;
+  background-color: rgba(161, 30, 0, 0.5); /* Semi-transparent white for indication */
+  cursor: col-resize; /* Cursor indicates resize action */
+  border-radius: 10px;
+}
 
 </style>
