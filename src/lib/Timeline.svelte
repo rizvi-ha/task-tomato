@@ -6,6 +6,17 @@
 
   const dispatch = createEventDispatcher();
 
+  function relativeToAbs(start) {
+    const result = new Date();
+    const roundedHour = result.getHours();
+    result.setHours(roundedHour);
+    result.setMinutes(0);
+    result.setSeconds(0);
+    result.setMilliseconds(0);
+    result.setTime(result.getTime() + start*60000);
+    return result
+  }
+
   function generateTimeline(length) {
     const now = new Date();
     const roundedHour = now.getHours();
@@ -26,6 +37,12 @@
       let formattedTime = `${hours}:${minutes} ${ampm}`;
       ticks.push({ time: formattedTime, isHourMark: isHourMark, dateTime: nextTick });
     }
+
+    for (let i = 0; i < events.length; i++) {
+      events[i].start = Math.round((events[i].abs_start.getTime() / 60000) - (now.getTime() / 60000));
+      console.log(events[i].start);
+    }
+
     return ticks;
   }
 
@@ -66,6 +83,7 @@
 
       if (Math.abs(movementInMinutes) >= 5) { // Check if movement exceeds the grid snap unit
         let newStart = event.start + movementInMinutes;
+        newStart = newStart - (newStart % 5);
         newStart = Math.max(0, Math.min(newStart, totalMinutes - event.length));
 
         event.start = newStart;
@@ -188,6 +206,10 @@
     }
   }, 10000);
 
+  $: for (let i = 0; i < events.length; i++) {
+      events[i].abs_start = relativeToAbs(events[i].start);
+  }
+
 </script>
   
 <div class="timeline-container" bind:this={timelineContainer}>
@@ -197,7 +219,7 @@
     <div class="tick" style="position: relative;">
       <div class={isHourMark ? 'hour-mark' : 'minute-mark'}></div>
       {#if isHourMark}
-        <div class="hour-label">&nbsp;{time}</div>
+        <div class="hour-label">&nbsp;&nbsp;{time}</div>
       {/if}
     </div>
 

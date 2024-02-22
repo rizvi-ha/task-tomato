@@ -5,20 +5,27 @@
   import Todo from './lib/Todo.svelte';
 
   let length = 6;
+
+  const test_time = new Date();
+  test_time.setHours(23);
+  test_time.setMinutes(30);
+
   let events = [
   {
     "id": 1,
-    "start": 105,
+    "start": 0,
     "length": 100,
     "color": "#ea4b07",
-    "label": "Study"
+    "label": "Study",
+    "abs_start" : test_time
   }, 
   {
     "id": 2,
-    "start": 50,
+    "start": 0,
     "length": 40,
     "color": "#ea0000",
-    "label": "Eat"
+    "label": "Eat",
+    "abs_start" : test_time
   }];
 
   function incrementLength() {
@@ -32,7 +39,7 @@
   }
 
   onMount(() => {
-    // initialization if needed
+    //
   });
 
 </script>
@@ -52,6 +59,7 @@
   <div class="todo-container">
     <Todo />
   </div>
+  <pre>{JSON.stringify(events, null, 2)}</pre>
 
 </main>
 
