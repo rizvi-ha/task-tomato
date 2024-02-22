@@ -38,6 +38,10 @@
 </script>
 
 <main>
+  <header>
+    <img src="../public/icon.png" alt="Logo" class="logo"> <!-- Add your logo path -->
+    <span class="site-name">task-tomato</span>
+  </header>
   <div class="timeline-cont">
     <Timeline {length} {events} on:update="{e => events = e.detail.events}" />
     <div class="length-controls">
@@ -49,12 +53,29 @@
     <Todo />
   </div>
 
-  <pre>{JSON.stringify(events, null, 2)}</pre>
 </main>
 
 
 
 <style>
+
+  header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .logo {
+    width: 80px; /* Adjust based on your logo's size */
+    height: auto;
+    margin-right: 10px; /* Gives some space between the logo and the site name */
+  }
+
+  .site-name {
+    font-size: 40px; /* Adjust size as needed */
+    font-weight: 700; /* Optional: if you want the font to be bold */
+  }
 
   main {
     display: flex;
