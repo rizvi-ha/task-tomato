@@ -39,7 +39,7 @@
 
 <main>
   <header>
-    <img src="../public/icon.png" alt="Logo" class="logo"> <!-- Add your logo path -->
+    <img src="/icon.png" alt="Logo" class="logo"> <!-- Add your logo path -->
     <span class="site-name">task-tomato</span>
   </header>
   <div class="timeline-cont">
