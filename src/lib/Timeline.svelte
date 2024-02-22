@@ -162,6 +162,32 @@
     accumulatedMovement = 0; // Reset on drag end
   }
 
+  let playheadElement;
+
+  // Function to calculate playhead's left position as a percentage
+  function updatePlayheadPosition(length) {
+    const now = new Date();
+    const start = ticks[0].dateTime;
+    const totalDuration = length*60;
+    const currentTimeOffset = now.getMinutes() - start.getMinutes();
+    const leftPercentage = (currentTimeOffset / totalDuration) * 100;
+    return leftPercentage;
+  }
+
+  // Reactive statement to update playhead position
+  $: if (playheadElement) {
+    const leftPos = updatePlayheadPosition(length);
+    playheadElement.style.left = `${leftPos}%`;
+  }
+
+  // Update playhead position every 10 seconds
+  setInterval(() => {
+    if (playheadElement) {
+      const leftPos = updatePlayheadPosition(length);
+      playheadElement.style.left = `${leftPos}%`;
+    }
+  }, 10000);
+
 </script>
   
 <div class="timeline-container" bind:this={timelineContainer}>
@@ -199,6 +225,8 @@
     </div>
 
   {/each}
+
+  <div class="playhead" bind:this={playheadElement}></div>
 
 </div>
 
@@ -252,7 +280,8 @@
 
   .event {
   position: relative;
-  cursor: grab; /* Ensure this is set for absolute positioning inside */
+  cursor: grab; 
+  overflow: hidden;
 }
 
 .event::after {
@@ -265,6 +294,15 @@
   background-color: rgba(161, 30, 0, 0.5); /* Semi-transparent white for indication */
   cursor: col-resize; /* Cursor indicates resize action */
   border-radius: 10px;
+}
+
+.playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px; 
+  background-color: #2fff00; 
+  z-index: 10; 
 }
 
 </style>
