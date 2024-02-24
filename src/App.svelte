@@ -3,11 +3,12 @@
   import { onMount } from 'svelte';
   import Timeline from './lib/Timeline.svelte';
   import Todo from './lib/Todo.svelte';
+  import Timer from './lib/Timer.svelte';
 
   let length = 6;
 
   const test_time = new Date();
-  test_time.setHours(23);
+  test_time.setHours(19);
   test_time.setMinutes(30);
 
   let events = [
@@ -56,11 +57,14 @@
       <button on:click={decrementLength}>-</button>
     </div>
   </div>
-  <div class="todo-container">
-    <Todo />
+  <div class = "foot-area">
+    <div class="todo-container">
+      <Todo />
+    </div>
+    <div class="timer-container">
+      <Timer {events}/>
+    </div>
   </div>
-  <pre>{JSON.stringify(events, null, 2)}</pre>
-
 </main>
 
 
@@ -120,6 +124,20 @@
   .todo-container {
     padding: 10px;
     width: 25vw;
+  }
+
+  .foot-area {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    padding: 0px;
+    width: 100vw;
+    flex-direction: row;
+  }
+
+  .timer-container{
+    width : 70vw;
+    height : 400px;
   }
 
 </style>

@@ -40,7 +40,6 @@
 
     for (let i = 0; i < events.length; i++) {
       events[i].start = Math.round((events[i].abs_start.getTime() / 60000) - (now.getTime() / 60000));
-      console.log(events[i].start);
     }
 
     return ticks;
