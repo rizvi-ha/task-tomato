@@ -9,6 +9,12 @@
 
   let events = JSON.parse(localStorage.getItem('events')) || [];
 
+  const isMobile = () => {
+    return (window.innerWidth <= 800) || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  };
+
+  let onMobileDevice = isMobile();
+
   if (events.length !== 0)
   {
     events = events.map(event => ({
@@ -48,6 +54,11 @@
 
 </script>
 
+{#if onMobileDevice}
+  <div class="error-message">
+    Sorry, this application is not available on mobile devices.
+  </div>
+{:else}
 <main>
   <header>
     <img src="/icon.png" alt="Logo" class="logo"> <!-- Add your logo path -->
@@ -69,10 +80,18 @@
     </div>
   </div>
 </main>
+{/if}
 
 
 
 <style>
+
+  .error-message {
+    color: red;
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+  }
 
   header {
     display: flex;
