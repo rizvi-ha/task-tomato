@@ -12,13 +12,19 @@
 
     const dispatch = createEventDispatcher();
 
-    const colors = ['#ea4b07', '#F9692B', '#EA4A67', '#C4515E', '#FF8163'];
+    const colors = ['#ea4b07', '#F9692B', '#f54242', '#ff1717', '#FF8163'];
+    let colorIndex = 0;
 
     function addTask() {
         if (newTask.trim() !== '') {
             const taskExists = tasks.some(task => task.title.toLowerCase() === newTask.trim().toLowerCase());
             if (!taskExists) {
-                const randomColor = colors[Math.floor(Math.random() * colors.length)]; 
+                // Cycle through colors
+                const randomColor = colors[colorIndex]; 
+                colorIndex += 1;
+                if (colorIndex == colors.length)
+                    colorIndex = 0
+
                 tasks = [...tasks, { id: Date.now(), title: newTask.trim(), color: randomColor }];
                 newTask = ''; // Reset input field
                 saveTasks();
