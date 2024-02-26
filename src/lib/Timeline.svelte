@@ -29,13 +29,14 @@
     for (let i = 0; i < length * 12; i++) { 
       let nextTick = new Date(now.getTime() + i * 5 * 60 * 1000); 
       let isHourMark = nextTick.getMinutes() === 0;
+      let isHalfHourMark = nextTick.getMinutes() === 30;
       let hours = nextTick.getHours();
       let ampm = hours >= 12 ? 'PM' : 'AM';
       hours = hours % 12;
       hours = hours ? hours : 12;
       let minutes = isHourMark ? '00' : nextTick.getMinutes().toString().padStart(2, '0');
       let formattedTime = `${hours}:${minutes} ${ampm}`;
-      ticks.push({ time: formattedTime, isHourMark: isHourMark, dateTime: nextTick });
+      ticks.push({ time: formattedTime, isHourMark: isHourMark, isHalfHourMark: isHalfHourMark, dateTime: nextTick });
     }
 
     for (let i = 0; i < events.length; i++) {
@@ -55,7 +56,7 @@
             left: ${leftPercentage}%; 
             width: ${widthPercentage}%; 
             position: absolute; 
-            top: 15px; 
+            top: 20px; 
             height: 50%; 
             color: white;
             display: flex; 
@@ -234,6 +235,12 @@
     dispatch('update', { events }); 
   }
 
+  function handleRightClick(event, eventId) {
+    event.preventDefault(); // Prevent the default context menu
+    events = events.filter(e => e.id !== eventId); // Remove the event from the array
+    dispatch('update', { events }); // Dispatch an update to ensure reactivity
+  }
+
   function handleDragOver(event) {
     event.preventDefault();
   }
@@ -242,10 +249,10 @@
   
 <div role="presentation" class="timeline-container" on:drop={handleDrop} on:dragover={handleDragOver} bind:this={timelineContainer}>
 
-  {#each ticks as { time, isHourMark }, index}
+  {#each ticks as { time, isHourMark, isHalfHourMark }, index}
 
     <div class="tick" style="position: relative;">
-      <div class={isHourMark ? 'hour-mark' : 'minute-mark'}></div>
+      <div class={isHourMark ? 'hour-mark' : (isHalfHourMark ? 'half-hour-mark' : 'minute-mark')}></div>
       {#if isHourMark}
         <div class="hour-label">&nbsp;&nbsp;{time}</div>
       {/if}
@@ -266,6 +273,7 @@
           }}}"
 
          on:dragend="{handleDragEnd}"
+         on:contextmenu="{(e) => handleRightClick(e, event.id)}"
          role="gridcell"
          tabindex="0"
          aria-label="Draggable event">
@@ -299,7 +307,7 @@
     user-select: none;
   }
 
-  .hour-mark, .minute-mark {
+  .hour-mark, .minute-mark, .half-hour-mark {
     position: absolute;
     width: 100%;
     left: 0;
@@ -315,6 +323,12 @@
   .minute-mark {
     border-left: 1px solid #787878;
     height: 10px; 
+    top: 0;
+  }
+
+  .half-hour-mark {
+    border-left: 1px solid #787878;
+    height: 17px; 
     top: 0;
   }
 

@@ -132,6 +132,7 @@
       border-radius: 8px;
       height: 400px;
       line-height: 1;
+      overflow : auto;
     }
     .message {
       font-size: 30px;
