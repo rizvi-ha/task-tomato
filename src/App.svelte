@@ -21,15 +21,20 @@
   function incrementLength() {
     if (length < 10)
       length += 1;
+      localStorage.setItem('length', length.toString());
   }
 
   function decrementLength() {
     if (length > 4) 
       length -= 1;  
+      localStorage.setItem('length', length.toString());
   }
 
   onMount(() => {
-    //
+    const storedLength = localStorage.getItem('length');
+    if (storedLength !== null) {
+      length = parseInt(storedLength, 10);
+    }
   });
 
   function saveEvents() {
