@@ -7,8 +7,17 @@
 
   let length = 6;
 
-  let events = [];
+  let events = JSON.parse(localStorage.getItem('events')) || [];
 
+  if (events.length !== 0)
+  {
+    events = events.map(event => ({
+    ...event,
+    // Convert abs_start back to a Date object
+    abs_start: new Date(event.abs_start)
+    }));
+  }
+    
   function incrementLength() {
     if (length < 10)
       length += 1;
@@ -23,6 +32,15 @@
     //
   });
 
+  function saveEvents() {
+    localStorage.setItem('events', JSON.stringify(events));
+  }
+
+  function handleEventsUpdate(e) {
+    events = e.detail.events;
+    saveEvents();
+  }
+
 </script>
 
 <main>
@@ -31,7 +49,7 @@
     <span class="site-name">task-tomato</span>
   </header>
   <div class="timeline-cont">
-    <Timeline {length} {events} on:update="{e => events = e.detail.events}" />
+    <Timeline {length} {events} on:update="{e => handleEventsUpdate(e)}" />
     <div class="length-controls">
       <button on:click={incrementLength}>+</button>
       <button on:click={decrementLength}>-</button>
@@ -39,7 +57,7 @@
   </div>
   <div class = "foot-area">
     <div class="todo-container">
-      <Todo {events} on:update="{e => events = e.detail.events}"/>
+      <Todo {events} on:update="{e => handleEventsUpdate(e)}"/>
     </div>
     <div class="timer-container">
       <Timer {events}/>

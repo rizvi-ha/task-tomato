@@ -1,9 +1,14 @@
 <script>
 
     import { createEventDispatcher } from 'svelte';
-    let tasks = [];
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     let newTask = '';
+
     export let events;
+
+    function saveTasks() {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
 
     const dispatch = createEventDispatcher();
 
@@ -16,6 +21,7 @@
                 const randomColor = colors[Math.floor(Math.random() * colors.length)]; 
                 tasks = [...tasks, { id: Date.now(), title: newTask.trim(), color: randomColor }];
                 newTask = ''; // Reset input field
+                saveTasks();
             } else {
                 console.log('Task with this name already exists.');
             }
@@ -26,6 +32,7 @@
         events = events.filter(event => event.label !== taskLabel);
         dispatch('update', { events });
         tasks = tasks.filter(task => task.id !== taskId);
+        saveTasks();
     }
 
     function handleDragStart(event, task) {
