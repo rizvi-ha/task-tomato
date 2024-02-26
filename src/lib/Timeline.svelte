@@ -184,6 +184,13 @@
   // Function to calculate playhead's left position as a percentage
   function updatePlayheadPosition(length) {
     const now = new Date();
+
+    // Hacky way to get the timeline to scroll if time passes onto the next hour
+    if (now.getMinutes() == 0) {
+      length = length + 1;
+      length = length - 1;
+    }
+
     const start = ticks[0].dateTime;
     const totalDuration = length*60;
     const currentTimeOffset = now.getMinutes() - start.getMinutes();
@@ -344,7 +351,7 @@
   top: 0;
   bottom: 0;
   width: 2px; 
-  background-color: #2fff00; 
+  background-color: #136800; 
   z-index: 10; 
 }
 

@@ -95,7 +95,7 @@
   main {
     display: flex;
     justify-content: flex-start;
-    gap: 20px;
+    gap: 0px;
     padding: 0px;
     width: 100%;
     flex-direction: column;
@@ -103,15 +103,15 @@
   }
 
   .timeline-cont {
-    padding: 10px;
+    padding: 2vw;
     width: 95vw; 
     position: relative;
   }
 
   .length-controls {
     position: absolute;
-    right: 0px;
-    top: 50px;
+    right: 40px;
+    top: 70px;
     display: flex;
     flex-direction: column;
   }

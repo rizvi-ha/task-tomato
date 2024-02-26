@@ -13,6 +13,7 @@
 
     let interval;
     let message;
+    let quote = { content: 'Loading quote...', author: '' };
   
     const checkEvents = () => {
 
@@ -62,9 +63,20 @@
         }
       }
     };
+
+    const fetchRandomQuote = async () => {
+      const response = await fetch('https://api.quotable.io/random');
+      if (response.ok) {
+          const data = await response.json();
+          quote = { content: data.content, author: data.author };
+      } else {
+          quote = { content: 'Failed to load quote', author: '' };
+      }
+    };
   
     onMount(() => {
       checkEvents();
+      fetchRandomQuote();
       interval = setInterval(checkEvents, 1000); 
     });
   
@@ -95,7 +107,7 @@
         if (status.doubleBooked)
           message = 'Only one task at a time!';
         else 
-          message = 'Add tasks to begin';
+          message = 'Drag tasks onto the timeline to begin';
       }
     } 
     
@@ -105,8 +117,9 @@
   
   <main>
     <div class="timer-box">
-      <div class="message">{message}</div>
+      <div class="message"><b>{message}</b></div>
       <div class="countdown">{formattedTime}</div>
+      <div class="quote"><br><br><i>"{quote.content}" - {quote.author}</i></div>
     </div>
   </main>
 
@@ -122,11 +135,16 @@
     }
     .message {
       font-size: 30px;
+      line-height: 3;
     }
     
     .countdown {
       padding : 40px;
-      font-size : 60px;
+      font-size : 100px;
+    }
+
+    .quote {
+      font-size : 20px;
     }
   </style>
   

@@ -18,7 +18,7 @@
     function addTask() {
         if (newTask.trim() !== '') {
             const taskExists = tasks.some(task => task.title.toLowerCase() === newTask.trim().toLowerCase());
-            if (!taskExists) {
+            if (!taskExists && newTask.length < 30) {
                 // Cycle through colors
                 const randomColor = colors[colorIndex]; 
                 colorIndex += 1;
@@ -29,7 +29,7 @@
                 newTask = ''; // Reset input field
                 saveTasks();
             } else {
-                console.log('Task with this name already exists.');
+                console.log('Task with this name already exists, or the task is greater than the max of 30 characters');
             }
         }
     }
