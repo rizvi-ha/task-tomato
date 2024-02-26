@@ -1,22 +1,41 @@
 <script>
+
+    import { createEventDispatcher } from 'svelte';
     let tasks = [];
     let newTask = '';
+    export let events;
+
+    const dispatch = createEventDispatcher();
+
+    const colors = ['#ea4b07', '#F9692B', '#EA4A67', '#C4515E', '#FF8163'];
 
     function addTask() {
         if (newTask.trim() !== '') {
-            tasks = [...tasks, { id: Date.now(), title: newTask, completed: false }];
-            newTask = ''; // Reset input field
+            const taskExists = tasks.some(task => task.title.toLowerCase() === newTask.trim().toLowerCase());
+            if (!taskExists) {
+                const randomColor = colors[Math.floor(Math.random() * colors.length)]; 
+                tasks = [...tasks, { id: Date.now(), title: newTask.trim(), color: randomColor }];
+                newTask = ''; // Reset input field
+            } else {
+                console.log('Task with this name already exists.');
+            }
         }
     }
 
-    function removeTask(taskId) {
+    function removeTask(taskId, taskLabel) {
+        events = events.filter(event => event.label !== taskLabel);
+        dispatch('update', { events });
         tasks = tasks.filter(task => task.id !== taskId);
     }
+
+    function handleDragStart(event, task) {
+        event.dataTransfer.setData("application/task", JSON.stringify(task));
+    } 
+
 </script>
 
 <style>
     .task {
-        background-color: #ea4b07;
         padding: 10px;
         margin-bottom: 5px;
         border-radius: 4px;
@@ -32,6 +51,7 @@
         border-radius: 50%; /* Optional: makes the button circular */
         cursor: pointer; /* Changes the cursor to a pointer on hover */
     }
+
 </style>
 
 <div>
@@ -42,9 +62,9 @@
 {#if tasks.length > 0}
     <ul>
         {#each tasks as task (task.id)}
-            <li class="task">
+            <li draggable="true" class="task" on:dragstart={(event) => handleDragStart(event, task)} style="background-color: {task.color};">
                 {task.title}
-                <button on:click={() => removeTask(task.id)}>x</button>
+                <button on:click={() => removeTask(task.id, task.title)}>x</button>
             </li>
         {/each}
     </ul>

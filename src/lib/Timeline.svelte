@@ -209,9 +209,31 @@
       events[i].abs_start = relativeToAbs(events[i].start);
   }
 
+  function handleDrop(event) {
+    event.preventDefault();
+    const data = event.dataTransfer.getData("application/task");
+    const task = JSON.parse(data);
+
+    const newEvent = {
+      id: Date.now(), 
+      start: 0, // You might want to calculate this based on drop position
+      length: 25, 
+      color: task.color, 
+      label: task.title,
+      abs_start: relativeToAbs(0) 
+    };
+
+    events = [...events, newEvent];
+    dispatch('update', { events }); 
+  }
+
+  function handleDragOver(event) {
+    event.preventDefault();
+  }
+
 </script>
   
-<div class="timeline-container" bind:this={timelineContainer}>
+<div role="presentation" class="timeline-container" on:drop={handleDrop} on:dragover={handleDragOver} bind:this={timelineContainer}>
 
   {#each ticks as { time, isHourMark }, index}
 

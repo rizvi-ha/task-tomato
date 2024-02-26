@@ -7,27 +7,7 @@
 
   let length = 6;
 
-  const test_time = new Date();
-  test_time.setHours(19);
-  test_time.setMinutes(30);
-
-  let events = [
-  {
-    "id": 1,
-    "start": 0,
-    "length": 100,
-    "color": "#ea4b07",
-    "label": "Study",
-    "abs_start" : test_time
-  }, 
-  {
-    "id": 2,
-    "start": 0,
-    "length": 40,
-    "color": "#ea0000",
-    "label": "Eat",
-    "abs_start" : test_time
-  }];
+  let events = [];
 
   function incrementLength() {
     if (length < 10)
@@ -59,7 +39,7 @@
   </div>
   <div class = "foot-area">
     <div class="todo-container">
-      <Todo />
+      <Todo {events} on:update="{e => events = e.detail.events}"/>
     </div>
     <div class="timer-container">
       <Timer {events}/>
