@@ -79,12 +79,20 @@
       <Timer {events}/>
     </div>
   </div>
+  <footer>Click on the right of an event to resize it. <br> Right click an event to remove it <br> © Hassan Rizvi 2024</footer>
 </main>
 {/if}
 
 
 
 <style>
+  
+  footer {
+    padding-top: 50px;
+    padding-left: 20px;
+    text-align: left;
+    font-size: 12px;
+  }
 
   .error-message {
     color: red;
