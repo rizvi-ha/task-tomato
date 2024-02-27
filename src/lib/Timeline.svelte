@@ -186,10 +186,9 @@
   function updatePlayheadPosition(length) {
     const now = new Date();
 
-    // Hacky way to get the timeline to scroll if time passes onto the next hour
+    // To get the timeline to scroll if time passes onto the next hour
     if (now.getMinutes() == 0) {
-      length = length + 1;
-      length = length - 1;
+      ticks = generateTimeline(length);
     }
 
     const start = ticks[0].dateTime;
