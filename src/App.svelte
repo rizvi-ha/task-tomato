@@ -47,6 +47,8 @@
     localStorage.setItem('events', JSON.stringify(events));
   }
 
+  setInterval(() => saveEvents() , 10000);
+
   function handleEventsUpdate(e) {
     events = e.detail.events;
     saveEvents();
