@@ -1,5 +1,7 @@
 # task-tomato
 
+UPDATE: Now hosted on tt.hassan-rizvi.com ! Check it out!
+
 I found myself often times using Pomodoro timers online (shoutout to pomofocus.io) while writing out timelines on paper, which
 made me realize that an online tool that combined these things would be really useful to me.
 
