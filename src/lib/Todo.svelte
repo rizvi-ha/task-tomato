@@ -45,6 +45,11 @@
         event.dataTransfer.setData("application/task", JSON.stringify(task));
     } 
 
+    function handleSubmit(event) {
+        event.preventDefault();
+        addTask();
+    }
+
 </script>
 
 <style>
@@ -67,10 +72,10 @@
 
 </style>
 
-<div>
+<form on:submit|preventDefault={handleSubmit}>
     <input type="text" bind:value={newTask} placeholder="Enter a new task" />
     <button on:click={addTask}>Add Task</button>
-</div>
+</form>
 
 {#if tasks.length > 0}
     <ul>

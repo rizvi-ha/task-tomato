@@ -67,8 +67,8 @@
   <div class="timeline-cont">
     <Timeline {length} {events} on:update="{e => handleEventsUpdate(e)}" />
     <div class="length-controls">
-      <button on:click={incrementLength}>+</button>
-      <button on:click={decrementLength}>-</button>
+      <button on:click={decrementLength}>+</button>
+      <button on:click={incrementLength}>-</button>
     </div>
   </div>
   <div class = "foot-area">

@@ -13,6 +13,8 @@
 
     let interval;
     let message;
+    let startSound;
+    let endSound;
     let quote = { content: 'Loading quote...', author: '' };
   
     const checkEvents = () => {
@@ -77,7 +79,10 @@
     onMount(() => {
       checkEvents();
       fetchRandomQuote();
-      interval = setInterval(checkEvents, 1000); 
+      interval = setInterval(checkEvents, 1000);
+      
+      startSound = new Audio('/break-end.mp3');
+      endSound = new Audio('/task-end.mp3')
     });
   
     onDestroy(() => {
@@ -88,6 +93,14 @@
     $: hours = Math.floor(status.secondsLeft / 3600);
     $: minutes = Math.floor((status.secondsLeft % 3600) / 60);
     $: seconds = status.secondsLeft % 60;
+
+    $: if (status.secondsLeft === 1 && status.state !== 'break_timer') {
+        startSound.play().catch(error => console.error("Error playing sound:", error));
+      }
+
+    $: if (status.secondsLeft === 1 && status.state !== 'task_timer') {
+        endSound.play().catch(error => console.error("Error playing sound:", error));
+      }
 
     // Format the time nicely
     $: formattedTime = hours > 0
@@ -110,6 +123,8 @@
           message = 'Drag tasks onto the timeline to begin';
       }
     } 
+
+    $: document.title = status.state === 'no_timer' ?  'task-tomato' : (`${formattedTime} - ${status.state === 'task_timer' ? status.eventName : 'Break Time!'}`);
     
 
 
