@@ -67,15 +67,28 @@
     };
 
     const fetchRandomQuote = async () => {
-      const response = await fetch('https://api.quotable.io/random');
+      const category = 'inspirational'; 
+      const apiKey = 'NVpS+CPaUwva+vA5N2i3yQ==dlSZqatfCGb41vf5';
+    
+      const response = await fetch(`https://api.api-ninjas.com/v1/quotes?category=${category}`, {
+        headers: {
+          'X-Api-Key': apiKey
+        }
+      });
+    
       if (response.ok) {
-          const data = await response.json();
-          quote = { content: data.content, author: data.author };
+        const data = await response.json();
+        // Assuming the API returns an array of quotes, pick the first one
+        if (data.length > 0) {
+          quote = { content: data[0].quote, author: data[0].author };
+        } else {
+          quote = { content: 'No quotes available', author: '' };
+        }
       } else {
-          quote = { content: 'Failed to load quote', author: '' };
+        quote = { content: 'Failed to load quote', author: '' };
       }
     };
-  
+      
     onMount(() => {
       checkEvents();
       fetchRandomQuote();
