@@ -67,14 +67,8 @@
     };
 
     const fetchRandomQuote = async () => {
-      const category = 'inspirational'; 
-      const apiKey = 'NVpS+CPaUwva+vA5N2i3yQ==dlSZqatfCGb41vf5';
     
-      const response = await fetch(`https://api.api-ninjas.com/v1/quotes?category=${category}`, {
-        headers: {
-          'X-Api-Key': apiKey
-        }
-      });
+      const response = await fetch(`https://stoic.tekloon.net/stoic-quote`);
     
       if (response.ok) {
         const data = await response.json();
