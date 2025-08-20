@@ -68,13 +68,13 @@
 
     const fetchRandomQuote = async () => {
     
-      const response = await fetch(`https://stoic.tekloon.net/stoic-quote`);
+      const response = await fetch(`https://zenquotes.io/api/random`);
     
       if (response.ok) {
         const data = await response.json();
         // Assuming the API returns an array of quotes, pick the first one
         if (data.length > 0) {
-          quote = { content: data[0].quote, author: data[0].author };
+          quote = { content: data[0].q, author: data[0].a };
         } else {
           quote = { content: 'No quotes available', author: '' };
         }
