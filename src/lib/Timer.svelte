@@ -65,27 +65,9 @@
         }
       }
     };
-
-    const fetchRandomQuote = async () => {
-    
-      const response = await fetch(`https://zenquotes.io/api/random`);
-    
-      if (response.ok) {
-        const data = await response.json();
-        // Assuming the API returns an array of quotes, pick the first one
-        if (data.length > 0) {
-          quote = { content: data[0].q, author: data[0].a };
-        } else {
-          quote = { content: 'No quotes available', author: '' };
-        }
-      } else {
-        quote = { content: 'Failed to load quote', author: '' };
-      }
-    };
       
     onMount(() => {
       checkEvents();
-      fetchRandomQuote();
       interval = setInterval(checkEvents, 1000);
       
       startSound = new Audio('/break-end.mp3');
@@ -141,7 +123,6 @@
     <div class="timer-box">
       <div class="message"><b>{message}</b></div>
       <div class="countdown">{formattedTime}</div>
-      <div class="quote"><br><br><i>"{quote.content}" - {quote.author}</i></div>
     </div>
   </main>
 
